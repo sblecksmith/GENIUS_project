@@ -4,6 +4,8 @@
 
 library(ggplot2)
 library(dplyr)
+library(tidyr)
+library(ggsci)
 
 diversity <- read.csv("data/genius_cazyme_families_rounded_diversity.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE) %>%
   mutate(subject_id = paste0("s", subject_id),
@@ -58,7 +60,7 @@ F1B <- ggplot(fiber_monos_long, aes(fill=monosaccharide, y=percentage, x=Treat))
         legend.text = element_text(size = 12),
         legend.title = element_blank())
 
-
+F1B
 
 F1 <- grid.arrange(F1A, F1B, clip="off", ncol = 2)
 ggsave("figure_1.tiff", device = "tiff", dpi = 300, width = 9, height = 9, units = "in", path = "output", F1, bg = "white")
