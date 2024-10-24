@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto
+
+data/*
+output/*
+
+!data/free_monos_controls.csv
+!data/free_monos_noncontrols.csv
+!data/scfa_controls_all.csv
+!data/scfa_noncontrols_all.csv
+!data/total_monos_controls.csv
+!data/total_monos_noncontrols.csv
