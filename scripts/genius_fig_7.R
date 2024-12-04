@@ -76,28 +76,13 @@ dev.off()
 ## use hierarchical clustering to cluster the codebook vectors
 som_cluster9 <- cutree(hclust(dist(getCodes(som_model))), 9)
 
-#palette_wedges <- colorRampPalette(c(carto_pal(7, "Pastel")))
 pal_npg("nrc")(10)
 pretty_palette <- c("#B09C85FF","#4DBBD5FF", "#F39B7FFF","#00A087FF", "#E64B35FF", "#3C5488FF","#91D1C2FF", "#8491B4FF","#7E6148FF")
 palette_wedges <- colorRampPalette(c(carto_pal(7, "Geyser")))
 
-tiff(filename = "output/genius_figure_10.tiff", width = 9, height = 7, units = "in", res = 300)
+tiff(filename = "output/figure_7.tiff", width = 9, height = 7, units = "in", res = 300)
 plot(som_model, type="codes", bgcol = pretty_palette[som_cluster9], main = "", palette.name=palette_wedges)
 dev.off()
-
-
-
-# nine clusters
-## use hierarchical clustering to cluster the codebook vectors
-#som_cluster9 <- cutree(hclust(dist(getCodes(som_model))), 9)
-
-#pretty_palette <- carto_pal(9, "Prism")
-#palette_wedges <- colorRampPalette(c(carto_pal(7, "Pastel")))
-
-#plot(som_model, type="mapping", bgcol = pretty_palette[som_cluster9], main = "Clusters") 
-#add.cluster.boundaries(som_model, som_cluster9)
-#plot(som_model, type="codes", bgcol = pretty_palette[som_cluster9], main = "Clusters", palette.name=palette_wedges)
-#add.cluster.boundaries(som_model, som_cluster9)
 
 # get vector with cluster value for each original data sample
 cluster_assignment9 <- som_cluster9[som_model$unit.classif]
