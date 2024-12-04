@@ -73,4 +73,4 @@ F5B <- ggplot(free_monos1_diff, aes(x = Treat, y = delta_free_monos)) +
     hide.ns = TRUE)
 
 F5<- grid.arrange(F5A, F5B, clip="off", ncol = 2)
-ggsave("figure_5.tiff", device = "tiff", dpi = 300, width = 20, height = 10, units = "in", path = "output", F5)
+ggsave("figure_5.tiff", device = "tiff", dpi = 300, width = 15, height = 7, units = "in", path = "output", F5)
