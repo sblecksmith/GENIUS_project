@@ -1,11 +1,12 @@
 # title: genius_fig_1
 # author: Sarah Blecksmith
-# purpose: make plot of Chao1 diversity in subjects
+# purpose: make Figure 1, plot of Chao1 diversity in subjects and the composition of fibers
 
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(ggsci)
+library(gridExtra)
 
 diversity <- read.csv("data/genius_cazyme_families_rounded_diversity.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE) %>%
   mutate(subject_id = paste0("s", subject_id),
@@ -34,11 +35,14 @@ F1A <- ggplot(diversity, aes(x=reorder(subject_id, Chao1), y=Chao1)) +
        y = "Chao1",
        tag = "A") + 
   xlab("Participants") +
-  theme(axis.ticks.x=element_blank(),
+  theme(text = element_text(size=18),
+        axis.ticks.x=element_blank(),
         plot.background = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        panel.border = element_blank())
+        panel.border = element_blank()) +
+  annotate("rect", xmin = 13.5, xmax = 18.5, ymin = -5, ymax = 95,
+           alpha = 0, color= "#E64B35FF", linewidth = 1.5) 
 
 F1A
 
@@ -52,7 +56,6 @@ F1B <- ggplot(fiber_monos_long, aes(fill=monosaccharide, y=percentage, x=Treat))
   scale_fill_npg() +
   labs(title = "Composition of Fibers", tag = "B") +
   theme(axis.title.x=element_blank(),
-        #axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         text = element_text(size=18),
         axis.text.x = element_text(angle = 45, hjust = 1),
@@ -63,4 +66,4 @@ F1B <- ggplot(fiber_monos_long, aes(fill=monosaccharide, y=percentage, x=Treat))
 F1B
 
 F1 <- grid.arrange(F1A, F1B, clip="off", ncol = 2)
-ggsave("figure_1.tiff", device = "tiff", dpi = 300, width = 9, height = 9, units = "in", path = "output", F1, bg = "white")
+ggsave("figure_1.tiff", device = "tiff", dpi = 300, width = 15, height = 8, units = "in", path = "output", F1, bg = "white")
