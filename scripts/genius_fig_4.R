@@ -2,6 +2,9 @@
 # author: Sarah Blecksmith
 # purpose: make correlation matrix
 
+library(phyloseq)
+library(microViz)
+
 all_subject_24hr_data <- read.csv("data/all_subject_data_24hrs.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 taxonomy <- read.csv("data/taxonomy.tsv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
 map <- read.csv("data/NIHBM_map.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
@@ -112,7 +115,7 @@ monos_order <- subset(correlations_df, correlations_df$term == "delta_total_mono
 monos_order <- dplyr::arrange(monos_order, desc(estimate))
 taxa_order <- monos_order$taxon
 
-tiff(filename = "output/asn_figure_6.tiff", width = 11, height = 6.5, units = "in", res = 300)
+tiff(filename = "output/figure_4.tiff", width = 11, height = 6.5, units = "in", res = 300)
 correlations_df %>% 
   mutate(p.FDR = p.adjust(p.value, method = "fdr")) %>% 
   mutate(term = case_when(term == "delta_total_monos" ~ 'total monos',
@@ -140,7 +143,7 @@ correlations_df %>%
   #scale_fill_distiller(palette = "BrBG", limits = c(-0.75, 0.75)) + 
   #theme_minimal() +
   labs(
-    x = NULL, y = NULL, fill = "Spearman's\nRank\nCorrelation") +
+    x = NULL, y = NULL, fill = "Spearman's\nRank\nCorrelation",
   caption = paste(
     "Asterisk indicates p < 0.05, not FDR adjusted",
     "Filled circle indicates FDR corrected p < 0.05", sep = "\n")) +
