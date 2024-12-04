@@ -54,4 +54,4 @@ F8 <- ggplot(samples_total_scfa_diff, aes(x = Subject, y = delta_total_scfa)) +
     step.increase = 0.08)
 
 F8
-ggsave("figure_8.tiff", device = "tiff", dpi = 300, width = 18, height = 10, units = "in", path = "output", F8)
+ggsave("figure_8.tiff", device = "tiff", dpi = 300, width = 13, height = 7, units = "in", path = "output", F8)
