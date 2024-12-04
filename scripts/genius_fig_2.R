@@ -154,4 +154,4 @@ layout <- rbind(c(1,2,3,8,8),
 
 F2 <- grid.arrange(p1, p2, p3, p4, p5, p6, p7,p8,legend, clip = "off",
                   layout_matrix = layout)
-ggsave("figure_2.tiff", device = "tiff", dpi = 300, width = 9, height = 9, units = "in", path = "output", F2, bg = "white")
+ggsave("figure_2.tiff", device = "tiff", dpi = 300, width = 15, height = 7, units = "in", path = "output", F2, bg = "white")
