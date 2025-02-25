@@ -4,11 +4,13 @@
 
 library(phyloseq)
 library(microViz)
+library(dplyr)
 
 all_subject_24hr_data <- read.csv("data/all_subject_data_24hrs.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 taxonomy <- read.csv("data/taxonomy.tsv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
-map <- read.csv("data/NIHBM_map.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
+map <- read.csv("data/2023_09_20_NIHBM_map.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
 feature_table <- read.csv("data/NIHBM_feature_table.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t", skip =1)
+
 
 taxonomy <- dplyr::rename(taxonomy, Feature_ID = `Feature ID`)
 feature_table <- dplyr::rename(feature_table, OTU_ID = `#OTU ID`)
@@ -23,7 +25,7 @@ map$Subject <- gsub("0", "", map$Subject)
 map <- map %>% filter(Day == "d1")
 map <- map %>% mutate(matcher = paste(sep = "_", Day, Subject, Treat, Rp))
 map <- map %>% filter(Subject != "NoSub" & Treat != "Ctl-S") # don't want controls
-map <- map %>% filter(matcher != "d1_Sub3_Flax_C") 
+map <- map %>% filter(matcher != "d1_Sub3_Flax_C") # This sample doesn't have SCFA data
 all_subject_24hr_data$Day = "d1"
 all_subject_24hr_data <- all_subject_24hr_data %>% mutate(matcher = paste(sep = "_", Day, Subject, Treat, Rep))
 map <- merge(x = map, y= all_subject_24hr_data[,c("matcher", "delta_total_monos", "delta_free_monos", "delta_total_scfa", "delta_acetate", "delta_propionate", "delta_butyrate", "delta_lactate")], by = "matcher", all.x = TRUE)
@@ -63,14 +65,12 @@ prevdf = data.frame(Prevalence = prevdf,
 
 prevalence = plyr::ddply(prevdf, "Phylum", function(df1){cbind(mean(df1$Prevalence),sum(df1$Prevalence))})
 
-# Define phyla to filter
-filterPhyla = c( " p__Basidiomycota", " p__Campilobacterota", " p__Deinococcota", " p__Incertae_Sedis", " p__Patescibacteria", " p__Phragmoplastophyta", " p__Synergistota")
 
-# Filter entries with unidentified Phylum.
+# Define phyla to filter (eukaryotes and archaea)
+filterPhyla = c( " p__Basidiomycota", " p__Incertae_Sedis", " p__Phragmoplastophyta", " p__Euryarchaeota")
 genius_filtered = subset_taxa(genius0, !Phylum %in% filterPhyla)
 
 genius_fixed <- genius_filtered %>%
-  #tax_filter(min_prevalence = 3) %>%
   tax_fix(
     min_length = 4,
     unknowns = c(""),
@@ -91,7 +91,6 @@ genius_fixed <- genius_fixed %>%
           sep = " ", anon_unique = TRUE,
           suffix_rank = "classified")
 
-taxa = tax_top(genius_fixed, n=25, by = sum, trans = "compositional")
 
 my_samples <- sample_data(genius_fixed)
 
@@ -100,7 +99,6 @@ correlations_df <- genius_fixed %>%
   tax_filter(min_prevalence = 0.3, undetected =0, use_counts = TRUE) %>%
   tax_model(
     trans = "clr",
-    #trans_args = list(pseudocount = 1),
     rank = "Family", 
     variables = list("delta_total_monos", "delta_total_scfa", "delta_acetate", "delta_propionate","delta_butyrate", "delta_lactate"),
     type = microViz::cor_test, 
@@ -140,8 +138,6 @@ correlations_df %>%
                        high = "#E64B35",
                        na.value = "grey50",
                        midpoint = 0) +
-  #scale_fill_distiller(palette = "BrBG", limits = c(-0.75, 0.75)) + 
-  #theme_minimal() +
   labs(
     x = NULL, y = NULL, fill = "Spearman's\nRank\nCorrelation",
   caption = paste(
@@ -150,7 +146,6 @@ correlations_df %>%
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
         text = element_text(size=18, color = "black"),
         axis.ticks.y = element_blank(), 
-        #plot.caption = element_text(size = 18),
         panel.background = element_blank(),
         plot.background = element_blank())
 dev.off()

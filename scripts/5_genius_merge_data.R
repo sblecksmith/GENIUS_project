@@ -125,33 +125,33 @@ samples_butyrate_diff <- samples_butyrate_diff %>%
 
 samples_propionate_diff <- samples_propionate_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = samples_butyrate_diff, y= samples_propionate_diff[,c("sample_id", "delta_propionate", "pct_change_propionate")], by = "sample_id")
+subject_24hr_data <- merge(x = samples_butyrate_diff, y= samples_propionate_diff[,c("sample_id", "delta_propionate")], by = "sample_id")
 
 samples_acetate_diff <- samples_acetate_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = subject_24hr_data, y= samples_acetate_diff[,c("sample_id", "delta_acetate", "pct_change_acetate")], by = "sample_id")
+subject_24hr_data <- merge(x = subject_24hr_data, y= samples_acetate_diff[,c("sample_id", "delta_acetate")], by = "sample_id")
 
 samples_lactate_diff <- samples_lactate_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = subject_24hr_data, y= samples_lactate_diff[,c("sample_id", "delta_lactate", "pct_change_lactate")], by = "sample_id")
+subject_24hr_data <- merge(x = subject_24hr_data, y= samples_lactate_diff[,c("sample_id", "delta_lactate")], by = "sample_id")
 
 samples_total_scfa_diff <- samples_total_scfa_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = subject_24hr_data, y= samples_total_scfa_diff[,c("sample_id", "delta_total_scfa", "pct_change_total_scfa")], by = "sample_id")
+subject_24hr_data <- merge(x = subject_24hr_data, y= samples_total_scfa_diff[,c("sample_id", "delta_total_scfa")], by = "sample_id")
 
 free_monos1_diff <- free_monos1_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = subject_24hr_data, y= free_monos1_diff[,c("sample_id", "delta_free_monos", "pct_change_free_monos")], by = "sample_id")
+subject_24hr_data <- merge(x = subject_24hr_data, y= free_monos1_diff[,c("sample_id", "delta_free_monos")], by = "sample_id")
 
 total_monos1_diff <- total_monos1_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = subject_24hr_data, y= total_monos1_diff[,c("sample_id", "delta_total_monos", "pct_change_total_monos")], by = "sample_id")
+subject_24hr_data <- merge(x = subject_24hr_data, y= total_monos1_diff[,c("sample_id", "delta_total_monos")], by = "sample_id")
 
 shannon1_diff$Subject <- gsub("0", "", shannon1_diff$Subject)
 shannon1_diff$Rep <- gsub("rep", "", shannon1_diff$Rep)
 shannon1_diff <- shannon1_diff %>%
   mutate(sample_id = paste(sep = "_", Subject, Treat, Rep))
-subject_24hr_data <- merge(x = subject_24hr_data, y= shannon1_diff[,c("sample_id", "delta_shannon", "pct_change_shannon")], by = "sample_id")
+subject_24hr_data <- merge(x = subject_24hr_data, y= shannon1_diff[,c("sample_id", "delta_shannon")], by = "sample_id")
 
 
 baseline_shannon$Subject <- gsub("0", "", baseline_shannon$Subject)
@@ -162,4 +162,4 @@ baseline_shannon <- baseline_shannon %>%
 subject_24hr_data <- merge(x = subject_24hr_data, y= baseline_shannon[,c("sample_id", "baseline_shannon")], by = "sample_id")
 
 
-write.csv(subject_24hr_data, "data/all_subject_data_24hrs_pct_change.csv", row.names = FALSE)
+write.csv(subject_24hr_data, "data/all_subject_data_24hrs.csv", row.names = FALSE)

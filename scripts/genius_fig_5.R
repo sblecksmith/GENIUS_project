@@ -10,8 +10,8 @@ library(ggsci)
 library(gridExtra)
 
 # Figure 5A - change in shannon diversity
-shannon <- read.csv("data/shannon_diversity.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE) 
-  
+shannon <- read.csv("data/shannon_diversity.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
+
 shannon1 <- shannon %>%
   filter((Day == "d0" | Day == "d1") & Subject != "NoSub" & Treat != "Ctl-S") %>%
   mutate(Subject = factor(

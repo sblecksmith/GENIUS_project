@@ -151,7 +151,7 @@ ggsave("figure_S3.tiff", device = "tiff", dpi = 300, width = 9, height = 9, unit
 
 # Figure S4 
 # total SCFA line graphs
-scfa <- read.csv("data/scfa_noncontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
+scfa <- read.csv("data/scfa_nonstoolcontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 
 scfa$Day <- factor(scfa$Day, levels = c("d0", "d1", "d2", "d3"), ordered = TRUE)
 scfa <- scfa %>%
@@ -161,14 +161,13 @@ scfa <- scfa %>%
   dplyr::rename(butyrate = "Butyric Acid") %>%
   mutate(total_scfa = acetate + butyrate + propionate) %>%
   select(Day, Subject, Rep, Treat, total_scfa)  %>%
-  filter(Subject != "NoSub" & Treat != "ctl-s") %>%
   filter(!(Subject == "Sub3" & Treat == "Flax" & Rep == "C")) %>%
   mutate(subj_rep = paste0(Subject, Rep),
          Subject = factor(
            Subject,
-           levels=c("Sub1", "Sub2", "Sub3", "Sub4", "Sub5","Media & fiber", "Media only"),
-           labels=c("1", "2", "3", "4", "5", "Media & fiber", "Media only")))
-
+          levels=c("Sub1", "Sub2", "Sub3", "Sub4", "Sub5","Media & fiber", "Media only"),
+          labels=c("1", "2", "3", "4", "5", "Media & fiber", "Media only")))
+          
 S4A <- scfa %>%
   filter(Treat == "MSPrebio") %>%
   ggplot(aes(x = Day, y = total_scfa, group = subj_rep, color = Subject)) +
@@ -238,27 +237,30 @@ S4_legend_plot <- scfa %>%
   geom_line(linewidth = 1) + labs(title="Banana", tag = "G", color = "Participant") +
   scale_color_npg() +
   theme(legend.position = "bottom",
-        legend.text = element_text(size = 12),
+        legend.text = element_text(size = 14),
         legend.title.position = "top",
         legend.title = element_text(size = 12),
-        legend.key.size = unit(4, "line"))
+        legend.direction = "vertical",
+        legend.key.size = unit(2, "line")) +
+  guides(colour=guide_legend(nrow=5))
+
 
 legend_S4 <- ggpubr::get_legend(S4_legend_plot)
 as_ggplot(legend_S4)
 
 layout_S4 <- rbind(c(1,2,3),
                   c(4,5,6),
-                  c(7,8,8))
+                  c(7,8,NA))
 
 S4 <- grid.arrange(S4A, S4B, S4C, S4D, S4E, S4F, S4G, legend_S4, clip = "off",
                    layout_matrix = layout_S4)
 
-ggsave("figure_S4.tiff", device = "tiff", dpi = 300, width = 9, height = 9, units = "in", path = "output", S4, bg = "white")
+ggsave("figure_S4.tiff", device = "tiff", dpi = 300, width = 9, height = 6, units = "in", path = "output", S4, bg = "white")
 
 
 # Figure S5
 # Change in pielou's evenness
-pielou <- read.csv("data/pielou_evenness.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE) %>%
+pielou <- read.csv("data/pielou_evenness_bac_only.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE) %>%
   filter((Day == "d0" | Day == "d1") & Subject != "NoSub" & Treat != "Ctl-S") %>%
   mutate(Subject = factor(
     Subject,
@@ -286,7 +288,7 @@ S5 <- ggplot(pielou1_diff, aes(x = Treat, y = delta_pielou)) +
     hide.ns = TRUE)
 
 S5
-ggsave("figure_S5.tiff", device = "tiff", dpi = 300, width = 18, height = 14, units = "in", path = "output", S5)
+ggsave("figure_S5.tiff", device = "tiff", dpi = 300, width = 9, height = 9, units = "in", path = "output", S5)
 
 
 # Figure S6 
@@ -323,7 +325,7 @@ ggsave("figure_S6.tiff", device = "tiff", dpi = 300, width = 9, height = 9, unit
 
 # Figure S7 
 # Changes in lactate by fiber
-scfa <- read.csv("data/scfa_noncontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
+scfa <- read.csv("data/scfa_nonstoolcontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 
 scfa$Day <- factor(scfa$Day, levels = c("d0", "d1", "d2", "d3"), ordered = TRUE)
 scfa <- scfa %>%
@@ -369,7 +371,7 @@ ggsave("figure_S7.tiff", device = "tiff", dpi = 300, width = 9, height = 9, unit
 
 # Figure S8
 # Lactate over time
-scfa <- read.csv("data/scfa_noncontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
+scfa <- read.csv("data/scfa_nonstoolcontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 
 scfa$Day <- factor(scfa$Day, levels = c("d0", "d1", "d2", "d3"), ordered = TRUE)
 
@@ -377,12 +379,12 @@ samples_lactate <- scfa %>%
   dplyr::rename(lactate = "Lactic Acid") %>%
   select(Day, Subject, Rep, Treat, lactate)  %>%
   filter(!(Subject == "Sub3" & Treat == "Flax" & Rep == "C")) %>%
-  filter(Subject != "NoSub" & Treat != "ctl-s") %>% 
+  #filter(Subject != "NoSub" & Treat != "ctl-s") %>% 
   mutate(subj_rep = paste0(Subject, Rep),
          Subject = factor(
            Subject,
-           levels=c("Sub1", "Sub2", "Sub3", "Sub4", "Sub5"),
-           labels=c("1", "2", "3", "4", "5")))
+           levels=c("Sub1", "Sub2", "Sub3", "Sub4", "Sub5","Media & fiber", "Media only"),
+           labels=c("1", "2", "3", "4", "5", "Media & fiber", "Media only")))
 
 
 S8A <- samples_lactate %>%
@@ -458,10 +460,12 @@ S8_legend_plot <- samples_lactate %>%
   ggplot(aes(x = Day, y = lactate, group=subj_rep, color = Subject)) +
   geom_line(linewidth = 1) + labs(title="Banana", tag = "G", color = "Participant") +
   theme(legend.position = "bottom",
-        legend.text = element_text(size = 12),
+        legend.text = element_text(size = 14),
         legend.title.position = "top",
         legend.title = element_text(size = 12),
-        legend.key.size = unit(4, "line"))  +
+        legend.direction = "vertical",
+        legend.key.size = unit(2, "line")) +
+  guides(colour=guide_legend(nrow=5)) +
   scale_color_npg()
 
 legend_S8 <- ggpubr::get_legend(S8_legend_plot)
@@ -469,12 +473,234 @@ as_ggplot(legend_S8)
 
 layout_S8 <- rbind(c(1,2,3),
                     c(4,5,6),
-                    c(7,8,8))
+                    c(7,8,NA))
 
 S8 <- grid.arrange(S8A, S8B, S8C, S8D, S8E, S8F, S8G, legend_S8, clip = "off",
                     layout_matrix = layout_S8)
 
-ggsave("figure_S8.tiff", device = "tiff", dpi = 300, width = 9, height = 9, units = "in", path = "output", S8, bg = "white")
+ggsave("figure_S8.tiff", device = "tiff", dpi = 300, width = 9, height = 7, units = "in", path = "output", S8, bg = "white")
+
+
+
+# Figure SX
+# Total monosaccharides over time
+total_monos <- read.csv("data/total_monos_nonstoolcontrols.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
+total_monos$total_monos <- rowSums(total_monos[,5:18])
+total_monos$Day <- factor(total_monos$Day, levels = c("d0", "d1", "d2", "d3"), ordered = TRUE)
+
+total_monos <- total_monos %>%
+  select(Day, Subject, Rep, Treat, total_monos)  %>%
+  filter(!(Subject == "Sub3" & Treat == "Flax" & Rep == "C")) %>%
+  mutate(subj_rep = paste0(Subject, Rep),
+         Subject = factor(
+           Subject,
+           levels=c("Sub1", "Sub2", "Sub3", "Sub4", "Sub5","Media & fiber", "Media only"),
+           labels=c("1", "2", "3", "4", "5", "Media & fiber", "Media only")))
+
+
+S8A <- total_monos %>%
+  filter(Treat =="MSPrebio") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="MSPrebiotic", tag = "A") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+
+S8B <- total_monos %>%
+  filter(Treat =="Sunfiber") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Sunfiber", tag = "B") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+
+S8C <- total_monos %>%
+  filter(Treat =="Kale") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Kale", tag = "C") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+
+S8D <- total_monos %>%
+  filter(Treat =="13Bean") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="13 Bean Soup",tag = "D") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+S8E <- total_monos %>%
+  filter(Treat =="CocoFlour") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Coconut Flour", tag = "E") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+
+S8F <- total_monos %>%
+  filter(Treat =="Flax") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Flax", tag = "F") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+S8G <- total_monos %>%
+  filter(Treat =="Banana") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Banana", tag = "G") +
+  theme(legend.position = "none") +
+  ylab("total_monos") +
+  scale_color_npg() +
+  ylim(0, 22)
+
+
+S8_legend_plot <- total_monos %>%
+  filter(Treat =="Banana") %>%
+  ggplot(aes(x = Day, y = total_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Banana", tag = "G", color = "Participant") +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 14),
+        legend.title.position = "top",
+        legend.title = element_text(size = 12),
+        legend.direction = "vertical",
+        legend.key.size = unit(2, "line")) +
+  guides(colour=guide_legend(nrow=5)) +
+  scale_color_npg()
+
+legend_S8 <- ggpubr::get_legend(S8_legend_plot)
+as_ggplot(legend_S8)
+
+layout_S8 <- rbind(c(1,2,3),
+                   c(4,5,6),
+                   c(7,8,NA))
+
+S8 <- grid.arrange(S8A, S8B, S8C, S8D, S8E, S8F, S8G, legend_S8, clip = "off",
+                   layout_matrix = layout_S8)
+
+ggsave("figure_S8.tiff", device = "tiff", dpi = 300, width = 9, height = 7, units = "in", path = "output", S8, bg = "white")
+
+
+# Figure SX
+# free monosaccharides over time
+free_monos <- read.csv("data/free_monos_nonstoolcontrols.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
+free_monos$free_monos <- rowSums(free_monos[,5:18])
+free_monos$Day <- factor(free_monos$Day, levels = c("d0", "d1", "d2", "d3"), ordered = TRUE)
+
+free_monos <- free_monos %>%
+  select(Day, Subject, Rep, Treat, free_monos)  %>%
+  filter(!(Subject == "Sub3" & Treat == "Flax" & Rep == "C")) %>%
+  mutate(subj_rep = paste0(Subject, Rep),
+         Subject = factor(
+           Subject,
+           levels=c("Sub1", "Sub2", "Sub3", "Sub4", "Sub5","Media & fiber", "Media only"),
+           labels=c("1", "2", "3", "4", "5", "Media & fiber", "Media only")))
+
+
+S8A <- free_monos %>%
+  filter(Treat =="MSPrebio") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="MSPrebiotic", tag = "A") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+
+S8B <- free_monos %>%
+  filter(Treat =="Sunfiber") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Sunfiber", tag = "B") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+
+S8C <- free_monos %>%
+  filter(Treat =="Kale") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Kale", tag = "C") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+
+S8D <- free_monos %>%
+  filter(Treat =="13Bean") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="13 Bean Soup",tag = "D") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+S8E <- free_monos %>%
+  filter(Treat =="CocoFlour") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Coconut Flour", tag = "E") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+
+S8F <- free_monos %>%
+  filter(Treat =="Flax") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Flax", tag = "F") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+S8G <- free_monos %>%
+  filter(Treat =="Banana") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Banana", tag = "G") +
+  theme(legend.position = "none") +
+  ylab("free_monos") +
+  scale_color_npg() +
+  ylim(0, 3.5)
+
+
+S8_legend_plot <- free_monos %>%
+  filter(Treat =="Banana") %>%
+  ggplot(aes(x = Day, y = free_monos, group=subj_rep, color = Subject)) +
+  geom_line(linewidth = 1) + labs(title="Banana", tag = "G", color = "Participant") +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 14),
+        legend.title.position = "top",
+        legend.title = element_text(size = 12),
+        legend.direction = "vertical",
+        legend.key.size = unit(2, "line")) +
+  guides(colour=guide_legend(nrow=5)) +
+  scale_color_npg()
+
+legend_S8 <- ggpubr::get_legend(S8_legend_plot)
+as_ggplot(legend_S8)
+
+layout_S8 <- rbind(c(1,2,3),
+                   c(4,5,6),
+                   c(7,8,NA))
+
+S8 <- grid.arrange(S8A, S8B, S8C, S8D, S8E, S8F, S8G, legend_S8, clip = "off",
+                   layout_matrix = layout_S8)
+
+ggsave("figure_S8.tiff", device = "tiff", dpi = 300, width = 9, height = 7, units = "in", path = "output", S8, bg = "white")
+
 
 # Figure S9
 # Within cluster sum of squares for SOM plot
@@ -482,7 +708,7 @@ ggsave("figure_S8.tiff", device = "tiff", dpi = 300, width = 9, height = 9, unit
 
 # Figure S10
 # changes in SCFA by subject
-scfa <- scfa %>%
+scfa <- read.csv("data/scfa_nonstoolcontrols_all.csv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE) %>%
   dplyr::rename(lactate = "Lactic Acid") %>%
   dplyr::rename(propionate = "Propionic Acid") %>%
   dplyr::rename(acetate = "Acetic Acid") %>%
@@ -607,4 +833,4 @@ S10D <- ggplot(samples_lactate_diff, aes(x = Subject, y = delta_lactate)) +
     step.increase = 0.08)  
 
 S10 <- grid.arrange(S10A, S10B, S10C, S10D, clip="off", ncol = 2)
-ggsave("figure_S10.tiff", device = "tiff", dpi = 300, width = 20, height = 10, units = "in", path = "output", S10)
+ggsave("figure_S10.tiff", device = "tiff", dpi = 300, width = 10, height = 8, units = "in", path = "output", S10)

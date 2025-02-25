@@ -134,6 +134,8 @@ pH_diff <- rbind(pH1_diff, pH2_diff, pH3_diff)
 
 pH_diff$Day <- factor(pH_diff$Day, levels = c('0-24hours', '24-48hours', '48-72hours'), ordered = TRUE)
 
+shapiro.test(pH_diff$delta_pH)
+
 p8 <- pH_diff %>%
   ggplot(aes(x = Day, y = delta_pH)) +
   geom_point(size = 2.5, aes(color = Subject), position=position_jitterdodge(dodge.width=0.3))+

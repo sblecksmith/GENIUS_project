@@ -4,13 +4,61 @@
 
 library(dplyr)
 library(phyloseq)
+library(vegan)
 library(microbiome)
 
 
 
 taxonomy <- read.csv("data/taxonomy.tsv", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
-map <- read.csv("data/NIHBM_map.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
+map <- read.csv("data/2023_09_20_NIHBM_map.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t")
 feature_table <- read.csv("data/NIHBM_feature_table.txt", header = TRUE, stringsAsFactors = FALSE, check.names = FALSE, sep = "\t", skip =1)
+
+
+#otu_mat <- data.frame(feature_table, row.names = 1, check.names = FALSE)
+#flipped_features <- data.frame(t(otu_mat))
+#flipped_features$SampleID <- rownames(flipped_features)
+
+#merged <- merge(x=map[,c("SampleID", "Subject", "Day", "Rp", "Treat", "Tmt2")], y=flipped_features, by = "SampleID")
+#fiber_controls <- merged %>% subset(Treat=="ctl-f") %>%
+#  mutate(Treat = case_when(Tmt2 == "CF.Flax" ~ "Flax",
+#                           Tmt2 == "CF.KE" ~ "Kale",
+#                           Tmt2 == "CF.TBS" ~ "13Bean",
+#                           Tmt2 == "CF.SNFR" ~ "Sunfiber",
+#                            Tmt2 == "CF.CNFR" ~ "CocoFlour",
+#                            Tmt2 == "CF.MSP" ~ "MSPrebio",
+#                            Tmt2 == "CF.BN" ~ "Banana"))
+# 
+# subject_samples <- merged %>% subset(Subject != "NoSub" & Treat != "Ctl-S")
+# 
+# fiber_controls$total_count <- rowSums(fiber_controls[,7:34848])
+# 
+# 
+# fiber_controls_mean <- fiber_controls %>%
+#   dplyr::group_by(Treat, Day) %>%
+#   dplyr::arrange(Rp, .by_group=TRUE)  %>%
+#   dplyr::summarise(across(5:34846, mean))
+# 
+# #fiber_controls_mean$total_mean_count <- rowSums(fiber_controls_mean[,7:34842])
+# #fiber_controls_mean <- fiber_controls_mean %>% select(total_mean_count, everything())
+# 
+# subject_samples_adjusted <- data.frame()
+# for (index in 1:nrow(subject_samples)) {
+#   row = subject_samples[index,]
+#   id_data = row[,c("SampleID","Subject","Day", "Treat", "Rp")]
+#   control = fiber_controls_mean[fiber_controls_mean$Treat == id_data$Treat & fiber_controls_mean$Day == id_data$Day,]
+#   adjusted = row[,7:ncol(row)] - control[, 4:ncol(control)]
+#   new_row = cbind(id_data, adjusted)
+#   subject_samples_adjusted <- rbind(subject_samples_adjusted,new_row)
+# }
+# 
+# 
+# subject_samples_adjusted$total_count <- rowSums(subject_samples_adjusted[,6:34847])
+# subject_samples_adjusted <- subject_samples_adjusted %>% select(total_count, everything())
+# subject_samples$total_count <- rowSums(subject_samples[,7:34848])
+# subject_samples <- subject_samples %>% select(total_count, everything())
+# 
+# subject_samples_
+
 
 
 taxonomy <- dplyr::rename(taxonomy, Feature_ID = `Feature ID`)
@@ -27,7 +75,7 @@ tax_mat <- data.frame(taxonomy_sep, row.names = 1, check.names = FALSE)
 samples <- data.frame(map, row.names = 1, check.names = FALSE)
 
 
-# set the order of sample_ID.  This may not matter for Phyloseq, but it does for DESeq2
+# set the order of sample_ID.
 otu_mat <- otu_mat[,order(as.numeric(names(otu_mat)))]
 
 
@@ -55,8 +103,8 @@ prevdf = data.frame(Prevalence = prevdf,
 
 prevalence = plyr::ddply(prevdf, "Phylum", function(df1){cbind(mean(df1$Prevalence),sum(df1$Prevalence))})
 
-# Define phyla to filter
-filterPhyla = c( " p__Basidiomycota", " p__Campilobacterota", " p__Deinococcota", " p__Incertae_Sedis", " p__Patescibacteria", " p__Phragmoplastophyta", " p__Synergistota")
+# Define phyla to filter (eukaryotes and archaea)
+filterPhyla = c( " p__Basidiomycota", " p__Incertae_Sedis", " p__Phragmoplastophyta", " p__Euryarchaeota")
 
 # Filter entries with unidentified Phylum.
 genius_filtered = subset_taxa(genius0, !Phylum %in% filterPhyla)
