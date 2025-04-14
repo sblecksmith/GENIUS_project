@@ -54,7 +54,7 @@ fiber_monos_long$Treat <- factor(fiber_monos_long$Treat, levels = c("MSPreBio", 
 F1B <- ggplot(fiber_monos_long, aes(fill=monosaccharide, y=percentage, x=Treat)) + 
   geom_bar(position = position_fill(reverse = TRUE), stat="identity") +
   scale_fill_npg() +
-  labs(title = "Composition of Fibers", tag = "B") +
+  labs(title = "Composition of Fibers", tag = "B", y = "Abundance") +
   theme(axis.title.x=element_blank(),
         axis.ticks.x=element_blank(),
         text = element_text(size=18),

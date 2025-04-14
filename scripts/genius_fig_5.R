@@ -34,6 +34,7 @@ F5A <- ggplot(shannon1_diff, aes(x = Treat, y = delta_shannon)) +
   ggtitle("Change in Shannon diversity over first 24 hours for each substrate") +
   labs(tag = "A", color = "Participant") +
   ylab("change in Shannon diversity") +
+  xlab("Fiber") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",
@@ -65,7 +66,8 @@ F5B <- ggplot(free_monos1_diff, aes(x = Treat, y = delta_free_monos)) +
   scale_color_npg() +
   ggtitle("Change in free monosaccharides over first 24 hours for each substrate") +
   labs(tag = "B", color = "Participant") +
-  ylab("change in free monosaccharides") +
+  ylab("change in free monosaccharides\n(mg per mL sample") +
+  xlab("Fiber") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",

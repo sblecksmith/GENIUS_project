@@ -1,4 +1,4 @@
-# title: 1_CAZy_families
+# title: 1_genius_cazy_families
 # author: Sarah Blecksmith
 # purpose: make a table of aggregated CAZy families and subfamilies from initial metagenomes
 

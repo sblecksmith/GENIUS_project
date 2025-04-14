@@ -40,11 +40,12 @@ samples_total_scfa_diff <- samples_total_scfa %>%
     delta_total_scfa = diff(total_scfa, lag = 1)) 
 samples_total_scfa_diff$Treat = reorder(samples_total_scfa_diff$Treat, samples_total_scfa_diff$delta_total_scfa, median)
 F6A <- ggplot(samples_total_scfa_diff, aes(x = Treat, y = delta_total_scfa)) +
-  geom_point(size = 2.5, aes(color = Subject), position=position_jitterdodge(dodge.width=0.3))+
+  geom_point(size = 1.5, aes(color = Subject), position=position_jitter(width=0.3, height = 0.3))+
   geom_boxplot(outlier.shape = NA, color = "black", alpha = 0) + 
   scale_color_npg() +
   labs(title = "Total SCFA", tag = "A", color = "Participant") +
-  ylab("change in total SCFA") +
+  ylab(paste0("change in total SCFA\n(","\u03bc","g per mL sample)")) +
+  xlab("Fiber") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",
@@ -66,11 +67,12 @@ samples_acetate_diff <- samples_acetate %>%
     delta_acetate = diff(acetate, lag = 1)) 
 samples_acetate_diff$Treat = reorder(samples_acetate_diff$Treat, samples_acetate_diff$delta_acetate, median)
 F6B <- ggplot(samples_acetate_diff, aes(x = Treat, y = delta_acetate)) +
-  geom_point(size = 2.5, aes(color = Subject), position=position_jitterdodge(dodge.width=0.3))+
+  geom_point(size = 1.5, aes(color = Subject), position=position_jitter(width=0.3, height = 0.3))+
   geom_boxplot(outlier.shape = NA, color = "black", alpha = 0) + 
   scale_color_npg() +
   labs(title = "Acetate", tag = "B", color = "Participant") +
-  ylab("change in acetate") +
+  ylab(paste0("change in acetate\n(","\u03bc","g per mL sample)")) +
+  xlab("Fiber") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",
@@ -93,11 +95,12 @@ samples_butyrate_diff <- samples_butyrate %>%
     delta_butyrate = diff(butyrate, lag = 1)) 
 samples_butyrate_diff$Treat = reorder(samples_butyrate_diff$Treat, samples_butyrate_diff$delta_butyrate, median)
 F6C <- ggplot(samples_butyrate_diff, aes(x = Treat, y = delta_butyrate)) +
-  geom_point(size = 2.5, aes(color = Subject), position=position_jitterdodge(dodge.width=0.3))+
+  geom_point(size = 1.5, aes(color = Subject), position=position_jitter(width=0.3, height = 0.3))+
   geom_boxplot(outlier.shape = NA, color = "black", alpha = 0) + 
   scale_color_npg() +
   labs(title = "Butyrate", tag = "C", color = "Participant") +
-  ylab("change in butyrate") +
+  ylab(paste0("change in butyrate\n(","\u03bc","g per mL sample)")) +
+  xlab("Fiber") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",
@@ -119,11 +122,12 @@ samples_propionate_diff <- samples_propionate %>%
     delta_propionate = diff(propionate, lag = 1)) 
 samples_propionate_diff$Treat = reorder(samples_propionate_diff$Treat, samples_propionate_diff$delta_propionate, median)
 F6D <- ggplot(samples_propionate_diff, aes(x = Treat, y = delta_propionate)) +
-  geom_point(size = 2.5, aes(color = Subject), position=position_jitterdodge(dodge.width=0.3))+
+  geom_point(size = 1.5, aes(color = Subject), position=position_jitter(width=0.3, height = 0.3))+
   geom_boxplot(outlier.shape = NA, color = "black", alpha = 0) + 
   scale_color_npg() +
   labs(title = "Propionate", tag = "D", color = "Participant") +
-  ylab("change in propionate") +
+  ylab(paste0("change in propionate\n(","\u03bc","g per mL sample)")) +
+  xlab("Fiber") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",

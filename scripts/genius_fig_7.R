@@ -60,7 +60,7 @@ plot(som_model, type="codes")
 
 coolBlueHotRed <- function(n, alpha = 1) { rainbow(n, end=4/6, alpha=alpha)[n:1] }
 
-# plot wss - Figure S9
+# plot wss - Figure S10
 code_data <- as.data.frame(som_model$codes) 
 wss <- (nrow(code_data)-1)*sum(apply(code_data,2,var)) 
 for (i in 2:11) {

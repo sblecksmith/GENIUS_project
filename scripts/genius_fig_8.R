@@ -38,12 +38,12 @@ samples_total_scfa_diff <- samples_total_scfa %>%
     delta_total_scfa = diff(total_scfa, lag = 1)) 
 samples_total_scfa_diff$Subject = reorder(samples_total_scfa_diff$Subject, samples_total_scfa_diff$delta_total_scfa, median)
 F8 <- ggplot(samples_total_scfa_diff, aes(x = Subject, y = delta_total_scfa)) +
-  geom_point(size = 2.5, aes(color = Treat), position=position_jitterdodge(dodge.width=0.3))+
+  geom_point(size = 2, aes(color = Treat), position=position_jitter(width=0.3, height = 0.3))+
   geom_boxplot(outlier.shape = NA, color = "black", alpha = 0) + 
   scale_color_npg() +
-  labs(title = "Total SCFA", color = "Participant") +
-  ylab("change in total SCFA") +
-  xlab("") +
+  labs(title = "Total SCFA", color = "Fiber") +
+  ylab(paste0("change in total SCFA\n(","\u03bc","g per mL sample)")) +
+  xlab("Participant") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
     p.adjust.method = "bonferroni",

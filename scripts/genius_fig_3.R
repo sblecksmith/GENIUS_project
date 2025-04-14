@@ -120,7 +120,7 @@ F3B <- ggplot(total_scfa_diff, aes(x = Day, y = delta_total_scfa)) +
   geom_point(size = 2.5, aes(color = Subject), position=position_jitterdodge(dodge.width=0.3))+
   geom_boxplot(outlier.shape = NA, color = "black", alpha = 0) + 
   scale_color_npg() +
-  ylab("change in total SCFA") +
+  ylab(paste0("change in total SCFA\n(","\u03bc","g per mL sample)")) +
   labs(title="Change in total SCFA for 24 hour periods", tag = "B", color = "Participant") +
   geom_pwc(
     method = "wilcox_test", label = "p.adj.format",
