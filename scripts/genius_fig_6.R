@@ -139,4 +139,4 @@ F6D <- ggplot(samples_propionate_diff, aes(x = Treat, y = delta_propionate)) +
 
 
 F6 <- grid.arrange(F6A, F6B, F6C, F6D, clip="off", ncol = 2)
-ggsave("figure_6.tiff", device = "tiff", dpi = 300, width = 15, height = 9, units = "in", path = "output", F6)
+ggsave("figure_6.tiff", device = "tiff", dpi = 600, width = 15, height = 9, units = "in", path = "output", F6)

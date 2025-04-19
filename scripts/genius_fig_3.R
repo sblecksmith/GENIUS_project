@@ -132,7 +132,7 @@ F3B
 
 F3 <- grid.arrange(F3A, F3B, clip = "off", ncol = 2)
 
-ggsave("figure_3.tiff", device = "tiff", dpi = 300, width = 15, height = 7, units = "in", path = "output", F3, bg = "white")
+ggsave("figure_3.tiff", device = "tiff", dpi = 600, width = 15, height = 7, units = "in", path = "output", F3, bg = "white")
 
 
 

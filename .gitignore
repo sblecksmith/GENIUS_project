@@ -14,3 +14,4 @@ output/*
 !data/scfa_noncontrols_all.csv
 !data/total_monos_controls.csv
 !data/total_monos_noncontrols.csv
+!data/pH.csv

@@ -113,7 +113,7 @@ monos_order <- subset(correlations_df, correlations_df$term == "delta_total_mono
 monos_order <- dplyr::arrange(monos_order, desc(estimate))
 taxa_order <- monos_order$taxon
 
-tiff(filename = "output/figure_4.tiff", width = 11, height = 6.5, units = "in", res = 300)
+tiff(filename = "output/figure_4.tiff", width = 11, height = 6.5, units = "in", res = 600)
 correlations_df %>% 
   mutate(p.FDR = p.adjust(p.value, method = "fdr")) %>% 
   mutate(term = case_when(term == "delta_total_monos" ~ 'total monos',

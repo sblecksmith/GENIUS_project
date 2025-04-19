@@ -66,4 +66,4 @@ F1B <- ggplot(fiber_monos_long, aes(fill=monosaccharide, y=percentage, x=Treat))
 F1B
 
 F1 <- grid.arrange(F1A, F1B, clip="off", ncol = 2)
-ggsave("figure_1.tiff", device = "tiff", dpi = 300, width = 15, height = 8, units = "in", path = "output", F1, bg = "white")
+ggsave("figure_1.tiff", device = "tiff", dpi = 600, width = 15, height = 8, units = "in", path = "output", F1, bg = "white")
